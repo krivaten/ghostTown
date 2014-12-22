@@ -8,10 +8,10 @@
 
     defaults = {
         feed: '/rss',
-        liClass: '',
-        aClass: '',
         limit: 0,
-        debug: false
+        content: function(post) {
+            return '<li><a href="' + post.url + '""><strong>' + post.title + '</strong><br /><small>' + post.pubDate + '</small></a></li>';
+        }
     }
 
     // Set up necessary element and properties
@@ -35,12 +35,13 @@
             limit = self.options.limit,
             liClass = self.options.liClass,
             aClass = self.options.aClass,
+            content = self.options.content,
             count = 0;
 
         // Append posts to element
         posts.forEach(function(post) {
             if (!limit || count < self.options.limit) {
-                $(self.element).append($('<li class="' + liClass + '"><a class="' + aClass + '" href="' + post.url + '">' + post.title + '</a></li>'));
+                $(self.element).append($(content(post)));
             }
             count++;
         });
@@ -90,7 +91,8 @@
             if (item.find('title').text()) {
                 posts.push({
                     title: item.find('title').text(),
-                    url: item.find('link').text()
+                    url: item.find('link').text(),
+                    pubDate: item.find('pubDate').text()
                 });
             }
         }
