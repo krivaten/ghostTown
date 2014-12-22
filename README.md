@@ -31,27 +31,28 @@ The plugin has some options for you, if you want to customize the output a littl
 
 ```
 defaults = {
-    liClass: '',
-    aClass: '',
-    limit: 0
+    limit: 0,
+    content: function(post) {
+    	return '<li><a href="' + post.url + '""><strong>' + post.title + '</strong><br /><small>' + post.pubDate + '</small></a></li>';
+	}
 };
 ```
-
-### liClass
-This option sets a custom class on the `li` tags that are output from the plugin. By default, it does not add any class.
-
-### aClass
-This option sets a custom class on the `a` tags that are output from the plugin. By default, it does not add any class. 
 
 ### Limit
 This option sets a limit to the number of results that will be output. By default, it displays all the posts found with the specified tag.
 
+
+### Content
+This option allows to parse a different string as the content of each result that is returned. It must be struction as a `function` with the object passed in being the `post`. At this time, the properties that are returned and available in the `post` object are: `post.title`, `post.url`, and `post.pubDate`.
+
+
 # Using Custom Options
 ```
 $('[data-tag]').ghostTown({
-    liClass: 'list-item',
-    aClass: 'list-item-link',
-    limit: 5
+    limit: 5,
+    content: function(post) {
+        return '<a href="' + post.url + '"">' + post.title + '</a>';
+	}
 });
 ```
 
@@ -59,6 +60,7 @@ $('[data-tag]').ghostTown({
 
 - Optimize the code for speed.
 - Optimize the plugin for AJAX based themes.
+- Figure out how to return creator. 
 
 ## Credits
 Cheers to the folks who made:
